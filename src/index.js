@@ -1,9 +1,10 @@
 import express from "express"
 import { router } from "./routes/index.js"
 import { mongo } from "./config/mongo.js"
+import "dotenv/config";
 
 const app = express()
-const PORT = 9000
+const PORT = process.env.PORT || 9000
 mongo()
     .then(() => console.log("db was  connected"))
     .catch((err) => console.log(err))
