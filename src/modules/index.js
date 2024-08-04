@@ -1,0 +1,1 @@
+export { categoriesModule, categoryRouter, categoriesSchema } from "./categories/index.js";

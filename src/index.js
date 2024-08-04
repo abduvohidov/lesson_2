@@ -9,6 +9,6 @@ mongo()
     .catch((err) => console.log(err))
 
 app.use(express.json())
-app.use("/", router)
+app.use("/api/v1", router)
 
 app.listen(PORT, () => console.log(`server is running on port: http://localhost:${PORT}`))
