@@ -9,7 +9,7 @@ const categorySchema = new Schema({
         required: true
     }
 }, {
-    collation: 'categories'
+    collection: 'categories'
 })
 
 export const categoriesSchema = model('Category', categorySchema);
