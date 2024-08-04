@@ -9,15 +9,19 @@ export class JWTConfig {
         }
     }
 
-    sign(payload, options = {}) {
-        return jwt.sign(payload, this.secretKey, options);
+    sign(payload, options = { expiresIn: '1h' }) {
+        try {
+            return jwt.sign(payload, this.secretKey, options);
+        } catch (error) {
+            throw new Error(`Error signing token: ${error.message}`);
+        }
     }
 
     verify(token, options = {}) {
         try {
             return jwt.verify(token, this.secretKey, options);
         } catch (error) {
-            throw new Error("Invalid token");
+            throw new Error(`Error verifying token: ${error.message}`);
         }
     }
 }

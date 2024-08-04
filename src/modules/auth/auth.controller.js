@@ -1,6 +1,6 @@
 import { JWTConfig } from "../../config/jwt.js";
 import { responseHandler } from "../../utils/response.handler.js";
-import { usersSchema } from "../users/users.model.js";
+import { usersSchema } from "../users/index.js";
 import bcrypt from 'bcrypt';
 
 const { sign } = new JWTConfig();
@@ -11,21 +11,23 @@ class AuthController {
         try {
             const { username, password } = req.body;
 
-            const user = await usersSchema.findOne({ username: username });
+            const user = await usersSchema.findOne({ username });
 
             if (user && await bcrypt.compare(password, user.password)) {
                 const token = sign({ id: user._id });
-                const responseToken = { user: user, token: token };
+                const responseToken = { user, token };
                 sendOk(res, 200, "Token generated successfully", responseToken);
+                return
             } else {
-                sendError(res, 404, "Invalid username or password");
+                sendError(res, 401, "Invalid username or password");
+                return
             }
 
         } catch (e) {
-            console.log(e);
-            sendError(res, 500, e.message);
+            console.error(e);
+            sendError(res, 500, "Server error");
         }
     }
 }
 
-export const authController = new AuthController()
+export const authController = new AuthController();
